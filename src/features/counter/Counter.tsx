@@ -11,6 +11,12 @@ import {
 } from './counterSlice';
 import styles from './Counter.module.css';
 
+// bootstrap components:
+import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form';
+import InputGroup from 'react-bootstrap/esm/InputGroup';
+import { copyTextToClipboard } from './copyToClipboard';
+
 export function Counter() {
   const count = useAppSelector(selectCount);
   const dispatch = useAppDispatch();
@@ -19,50 +25,63 @@ export function Counter() {
   const incrementValue = Number(incrementAmount) || 0;
 
   return (
-    <div>
-      <div className={styles.row}>
-        <button
-          className={styles.button}
+    <Form style={{
+      width: 350,
+      display: 'flex',
+      flexDirection: 'column',
+      gap: 10,
+    }}>
+      <InputGroup style={{
+          justifyContent: 'center',
+          gap: 10
+        }}>
+        <Button
           aria-label="Decrement value"
           onClick={() => dispatch(decrement())}
         >
           -
-        </button>
-        <span className={styles.value}>{count}</span>
-        <button
-          className={styles.button}
+        </Button>
+        <span
+          onClick={() => copyTextToClipboard(`${count}`)}
+          className={styles.value}>{count}</span>
+        <Button
           aria-label="Increment value"
           onClick={() => dispatch(increment())}
         >
           +
-        </button>
-      </div>
-      <div className={styles.row}>
-        <input
-          className={styles.textbox}
+        </Button>
+      </InputGroup>
+      <InputGroup style={{
+        justifyContent: 'center',
+      }}>
+        <Form.Control
           aria-label="Set increment amount"
           value={incrementAmount}
-          onChange={(e) => setIncrementAmount(e.target.value)}
+          onChange={(e) => setIncrementAmount(e.currentTarget.value)}
         />
-        <button
-          className={styles.button}
+      </InputGroup>
+      <InputGroup
+        style={{
+          justifyContent: 'center',
+          gap: 10
+        }}
+      >
+        <Button
           onClick={() => dispatch(incrementByAmount(incrementValue))}
         >
           Add Amount
-        </button>
-        <button
-          className={styles.asyncButton}
+        </Button>
+        <Button
           onClick={() => dispatch(incrementAsync(incrementValue))}
         >
           Add Async
-        </button>
-        <button
-          className={styles.button}
+        </Button>
+        <Button
           onClick={() => dispatch(incrementIfOdd(incrementValue))}
         >
           Add If Odd
-        </button>
-      </div>
-    </div>
+        </Button>
+      </InputGroup>
+    </Form>
   );
 }
